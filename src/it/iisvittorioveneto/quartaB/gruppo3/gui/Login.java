@@ -3,10 +3,11 @@ package it.iisvittorioveneto.quartaB.gruppo3.gui;
 import it.iisvittorioveneto.quartaB.gruppo3.mariadb.JDBC;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-public class Login {
+public class Login extends JFrame {
     private JPanel contentPane;
     private JTextField emailTextField;
     private JPasswordField passwordField;
@@ -16,13 +17,21 @@ public class Login {
     private JLabel invalidEmailLabel;
 
     public Login() {
+        this.setContentPane(this.contentPane);
+        this.setSize(500, 250);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
         logInButton.addActionListener(e -> {
             try {
                 Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
                 if (pattern.matcher(emailTextField.getText()).matches()) {
+                    System.out.println(passwordField.getPassword());
                     String username = JDBC.logIn(emailTextField.getText(), passwordField.getPassword());
-                    if (username != null);
-                    //TODO go to home page
+                    if (username != null){
+                        //TODO go to home page
+                    }
                     else{
                         invalidEmailLabel.setText("");
                         noUserFoundLabel.setText("There is no user with those credentials");
@@ -39,7 +48,8 @@ public class Login {
             }
         });
         signInButton.addActionListener(e -> {
-            //TODO go to sign in form
+            this.dispose();
+            new SignIn();
         });
     }
 

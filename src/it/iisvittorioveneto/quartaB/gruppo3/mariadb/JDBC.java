@@ -4,8 +4,6 @@ import java.sql.*;
 
 public class JDBC {
 
-    public static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-
     static final String url = "jdbc:mariadb://192.168.64.3:3306/InventoriesManagementDB";
 
 
