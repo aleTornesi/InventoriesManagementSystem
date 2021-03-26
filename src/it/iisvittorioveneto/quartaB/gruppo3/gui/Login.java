@@ -27,10 +27,9 @@ public class Login extends JFrame {
             try {
                 Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
                 if (pattern.matcher(emailTextField.getText()).matches()) {
-                    System.out.println(passwordField.getPassword());
-                    String username = JDBC.logIn(emailTextField.getText(), passwordField.getPassword());
+                    String username = JDBC.logIn(emailTextField.getText(), new String(passwordField.getPassword()));
                     if (username != null){
-                        //TODO go to home page
+                        System.out.println(username);
                     }
                     else{
                         invalidEmailLabel.setText("");

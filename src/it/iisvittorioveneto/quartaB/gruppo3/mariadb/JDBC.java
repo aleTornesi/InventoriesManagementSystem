@@ -7,7 +7,7 @@ public class JDBC {
     static final String url = "jdbc:mariadb://192.168.64.3:3306/InventoriesManagementDB";
 
 
-    public static String logIn(String email, char[] password) throws SQLException {
+    public static String logIn(String email, String password) throws SQLException {
         Connection connection = DriverManager.getConnection(url, "username", null);
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("select * from Users where email = '" + email + "' and password='" + password + "'");
