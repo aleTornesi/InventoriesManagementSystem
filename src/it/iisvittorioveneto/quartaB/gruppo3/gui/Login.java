@@ -20,15 +20,16 @@ public class Login extends JFrame {
         this.setContentPane(this.contentPane);
         this.setSize(500, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2); //center the JFrame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         logInButton.addActionListener(e -> {
             try {
-                Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
-                if (pattern.matcher(emailTextField.getText()).matches()) {
+                Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"); //email regex
+                if (pattern.matcher(emailTextField.getText()).matches()) { //check that the email is valid
                     String username = JDBC.logIn(emailTextField.getText(), new String(passwordField.getPassword()));
                     if (username != null){
+                        //TODO go to home page
                         System.out.println(username);
                     }
                     else{
@@ -47,7 +48,7 @@ public class Login extends JFrame {
             }
         });
         signInButton.addActionListener(e -> {
-            this.dispose();
+            this.dispose(); //closes this JFrame
             new SignIn();
         });
     }

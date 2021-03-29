@@ -4,11 +4,11 @@ import java.sql.*;
 
 public class JDBC {
 
-    static final String url = "jdbc:mariadb://192.168.64.3:3306/InventoriesManagementDB";
+    static final String url = "jdbc:mysql://sql11.freesqldatabase.com/sql11402217";
 
 
     public static String logIn(String email, String password) throws SQLException {
-        Connection connection = DriverManager.getConnection(url, "username", null);
+        Connection connection = DriverManager.getConnection(url, "sql11402217", "ga3LaxewmN");
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("select * from Users where email = '" + email + "' and password='" + password + "'");
         if (rs.next()) {
