@@ -22,5 +22,14 @@ public class SignIn extends JFrame {
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        LoginRetButton.addActionListener(e -> {
+            this.dispose();
+            new Login();
+        });
+
+        SignInButton.addActionListener(e -> {
+            //TODO
+        });
     }
 }
