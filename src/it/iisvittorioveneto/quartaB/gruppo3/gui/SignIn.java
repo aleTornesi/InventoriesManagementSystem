@@ -4,12 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SignIn extends JFrame {
-    private JTextField name;
-    private JTextField lastName;
+    private JTextField username;
     private JTextField email;
-    private JLabel LabelName;
+    private JLabel LabelUsername;
     private JLabel LabelEmail;
-    private JLabel LabelLName;
     private JPasswordField password;
     private JButton LoginRetButton;
     private JButton SignInButton;
