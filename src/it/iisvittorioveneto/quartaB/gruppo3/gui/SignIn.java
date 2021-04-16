@@ -1,17 +1,23 @@
 package it.iisvittorioveneto.quartaB.gruppo3.gui;
 
+import it.iisvittorioveneto.quartaB.gruppo3.mariadb.JDBC;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class SignIn extends JFrame {
-    private JTextField username;
-    private JTextField email;
-    private JLabel LabelUsername;
-    private JLabel LabelEmail;
-    private JPasswordField password;
+    private JTextField usernameTextField;
+    private JTextField emailTextField;
+    private JLabel usernameLabel;
+    private JLabel emailLabel;
+    private JPasswordField passwordField;
     private JButton LoginRetButton;
     private JButton SignInButton;
     private JPanel contentPane;
+    private JLabel errorLabel;
 
     public SignIn() {
         this.setContentPane(this.contentPane);
@@ -27,7 +33,37 @@ public class SignIn extends JFrame {
         });
 
         SignInButton.addActionListener(e -> {
-            //TODO
+            try {
+                System.out.println("email: " + this.emailTextField.getText());
+                Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"); //email regex
+                if (pattern.matcher(this.emailTextField.getText()).matches()) { //check if the email is valid
+                    System.out.println("username: " + this.usernameTextField.getText());
+                    if (!this.usernameTextField.getText().equals("")){
+                        if (this.passwordField.getPassword() != null) {
+                            if (this.passwordField.getPassword().length > 5) {
+                                JDBC.signUp(this.emailTextField.getText(), new String(passwordField.getPassword()), this.usernameTextField.getText());
+                                this.dispose();
+                                new HomePage(this.emailTextField.getText());
+                            }
+                            else {
+                                this.errorLabel.setText("The password must be long at least 6 characters");
+                            }
+                        }
+                        else {
+                            this.errorLabel.setText("You must insert a password");
+                        }
+                    }
+                    else {
+                        this.errorLabel.setText("You must insert a username");
+                    }
+                }
+                else {
+                    this.errorLabel.setText("This email has an incorrect format");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 }
