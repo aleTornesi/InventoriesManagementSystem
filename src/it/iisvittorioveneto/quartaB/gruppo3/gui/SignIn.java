@@ -1,6 +1,8 @@
 package it.iisvittorioveneto.quartaB.gruppo3.gui;
 
+import it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem.User;
 import it.iisvittorioveneto.quartaB.gruppo3.mariadb.JDBC;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,9 +43,13 @@ public class SignIn extends JFrame {
                     if (!this.usernameTextField.getText().equals("")){
                         if (this.passwordField.getPassword() != null) {
                             if (this.passwordField.getPassword().length > 5) {
-                                JDBC.signUp(this.emailTextField.getText(), new String(passwordField.getPassword()), this.usernameTextField.getText());
+                                String email = this.emailTextField.getText();
+                                String password = new String(passwordField.getPassword());
+                                String username = this.usernameTextField.getText();
+                                JDBC.signUp(email, password, username);
                                 this.dispose();
-                                new HomePage(this.emailTextField.getText());
+                                new HomePage(new User(email, DigestUtils.sha1Hex(password), username));
+
                             }
                             else {
                                 this.errorLabel.setText("The password must be long at least 6 characters");

@@ -1,5 +1,6 @@
 package it.iisvittorioveneto.quartaB.gruppo3.gui;
 
+import it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem.User;
 import it.iisvittorioveneto.quartaB.gruppo3.mariadb.JDBC;
 
 import javax.swing.*;
@@ -27,9 +28,9 @@ public class Login extends JFrame {
             try {
                 Pattern pattern = Pattern.compile("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"); //email regex
                 if (pattern.matcher(emailTextField.getText()).matches()) { //check that the email is valid
-                    String email = JDBC.logIn(emailTextField.getText(), new String(passwordField.getPassword()));
-                    if (email != null){
-                        new HomePage(email);
+                    User user = JDBC.logIn(emailTextField.getText(), new String(passwordField.getPassword()));
+                    if (user != null){
+                        new HomePage(user);
                     }
                     else{
                         invalidEmailLabel.setText("");
