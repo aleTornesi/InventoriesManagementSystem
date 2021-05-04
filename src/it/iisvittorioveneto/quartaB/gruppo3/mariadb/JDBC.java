@@ -21,7 +21,7 @@ public class JDBC {
     public static User logIn(String email, String password) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Users where email = '" + email + "' and password=SHA1('" + password + ")'");
+        ResultSet rs = statement.executeQuery("select * from Users where email = '" + email + "' and password=SHA1('" + password + "');");
         if (rs.next()) {
             User user = new User(rs.getString("email"), rs.getString("password"), rs.getString("username"));
             rs.close();
@@ -38,8 +38,15 @@ public class JDBC {
     public static void signUp(String email, String password, String username) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("insert into Users values('" + email + "', SHA1('" + password + "'), '" + username + "');");
-        rs.close();
+        statement.executeQuery("insert into Users values('" + email + "', SHA1('" + password + "'), '" + username + "');");
+        statement.close();
+        connection.close();
+    }
+
+    public static void insertInventory(Inventory inventory) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        statement.executeQuery("insert into Inventories (name, fk_UsersEmail) values('" + inventory.getName() + "', '" + inventory.getOwner().getEmail() + "');");
         statement.close();
         connection.close();
     }
@@ -47,8 +54,8 @@ public class JDBC {
     public static List<Inventory> getInventories(User owner, String inventoryName) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Inventories where email = '%" + inventoryName + "%' and" +
-                " fk_UsersEmail=" + owner.getEmail() + " '");
+        ResultSet rs = statement.executeQuery("select * from Inventories where name like '%" + inventoryName + "%' and" +
+                " fk_UsersEmail='" + owner.getEmail() + " '");
         List<Inventory> inventories = new LinkedList<>();
         if (rs.next()) {
             inventories.add(new Inventory(owner, rs.getString("name"), rs.getFloat("full"), new LinkedList<>(), new LinkedList<>()));
@@ -57,6 +64,7 @@ public class JDBC {
             connection.close();
             return inventories;
         }
+        System.out.println(inventories);
         rs.close();
         statement.close();
         connection.close();
