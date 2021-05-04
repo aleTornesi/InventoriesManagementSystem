@@ -30,6 +30,8 @@ public class Inventory {
         this(user, null, 0, new LinkedList<>(), new LinkedList<>());
     }
 
+
+
     public Inventory(User owner, String name, float full, Collection<Product> products, Collection<Integer> quantities) {
         this.owner = owner;
         this.name = name;
@@ -49,6 +51,10 @@ public class Inventory {
 
     public float getFull() {
         return full;
+    }
+
+    public User getOwner() {
+        return owner;
     }
 
     public InventoryProduct[] getInventoriesProducts() {
