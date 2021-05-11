@@ -15,24 +15,30 @@ import java.util.List;
  */
 public class Inventory {
 
+    private Integer idInventory;
     private User owner;
     private String name;
     private float full;
     private List<InventoryProduct> inventoriesProducts;
 
+
     public Inventory() {this((User) null);}
 
+    public Inventory(int idInventory) {
+        this(idInventory, null, null, 0, new LinkedList<>(), new LinkedList<>());
+    }
     public Inventory(String name) {
-        this(null, name, 0, new LinkedList<>(), new LinkedList<>());
+        this(null, null, name, 0, new LinkedList<>(), new LinkedList<>());
     }
 
     public Inventory(User user) {
-        this(user, null, 0, new LinkedList<>(), new LinkedList<>());
+        this(null, user, null, 0, new LinkedList<>(), new LinkedList<>());
     }
 
 
 
-    public Inventory(User owner, String name, float full, Collection<Product> products, Collection<Integer> quantities) {
+    public Inventory(Integer idInventory, User owner, String name, float full, Collection<Product> products, Collection<Integer> quantities) {
+        this.idInventory = idInventory;
         this.owner = owner;
         this.name = name;
         this.full = full;
@@ -45,16 +51,20 @@ public class Inventory {
         }
     }
 
+    public int getIdInventory() {
+        return idInventory;
+    }
+
+    public void setIdInventory(int idInventory){
+        this.idInventory = idInventory;
+    }
+
     public String getName() {
         return name;
     }
 
     public float getFull() {
         return full;
-    }
-
-    public User getOwner() {
-        return owner;
     }
 
     public InventoryProduct[] getInventoriesProducts() {
@@ -75,5 +85,13 @@ public class Inventory {
 
     public void removeInventoryProduct(InventoryProduct inventoryProduct) {
         this.inventoriesProducts.remove(inventoryProduct);
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

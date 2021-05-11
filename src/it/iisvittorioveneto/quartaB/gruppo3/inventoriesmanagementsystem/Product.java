@@ -15,24 +15,40 @@ import java.util.List;
  */
 public class Product {
 
+    private Integer idProduct;
     private String name;
     private String description;
     private String productType;
-    private List<InventoryProduct> inventoriesProducts;
+    private Inventory inventory;
+    private Integer quantity;
+    private Company manufacturer;
 
-    public Product() {this(null, null, null, new LinkedList<>(), new LinkedList<>());}
+    public Product() {this(null, null, null, null, null, null, null);}
 
-    public Product(String name, String description, String productType, Collection<Inventory> inventories, List<Integer> quantity) {
+    public Product(int idProduct){
+        this(idProduct, null, null, null, null, null, null);
+    }
+
+    public Product(Integer idProduct, String name, String description, String productType, Company manufacturer, Inventory inventory, Integer quantity) {
+        this.idProduct = idProduct;
         this.name = name;
         this.description = description;
         this.productType = productType;
-        this.inventoriesProducts = new LinkedList<>();
-        if (inventories.size() != quantity.size()) throw new IllegalArgumentException("You have to pass the same number of inventories and quantities");
-        Inventory[] inventoriesArray = inventories.toArray(Inventory[]::new);
-        Integer[] quantityArray = quantity.toArray(Integer[]::new);
-        for (int i = 0; i < inventories.size(); i++) {
-            this.inventoriesProducts.add(new InventoryProduct(inventoriesArray[i], this, quantityArray[i]));
-        }
+        this.manufacturer = manufacturer;
+        this.inventory = inventory;
+        this.quantity = quantity;
+    }
+
+    public Product(Integer idProduct, String name, String description, String productType, Company manufacturer) {
+        this(idProduct, name, description, productType, manufacturer, null, null);
+    }
+
+    public Integer getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(Integer idProduct) {
+        this.idProduct = idProduct;
     }
 
     public String getName() {
@@ -47,10 +63,6 @@ public class Product {
         return productType;
     }
 
-    public InventoryProduct[] getInventoriesProducts() {
-        return inventoriesProducts.toArray(InventoryProduct[]::new);
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -63,11 +75,27 @@ public class Product {
         this.productType = productType;
     }
 
-    public void addInventoryProduct(Inventory inventory, int quantity) {
-        this.inventoriesProducts.add(new InventoryProduct(inventory, this, quantity));
+    public Company getManufacturer() {
+        return manufacturer;
     }
 
-    public void removeInventoryProduct(InventoryProduct inventoryProduct) {
-        this.inventoriesProducts.remove(inventoryProduct);
+    public void setManufacturer(Company manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

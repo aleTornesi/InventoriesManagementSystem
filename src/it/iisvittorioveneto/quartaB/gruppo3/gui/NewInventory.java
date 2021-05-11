@@ -1,5 +1,7 @@
 package it.iisvittorioveneto.quartaB.gruppo3.gui;
 
+import it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem.Inventory;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +13,7 @@ public class NewInventory extends JFrame {
     private JButton JButtonOk;
     private JButton JButtonUndo;
 
-    public NewInventory() {
+    public NewInventory(Inventory inventory) {
         this.setContentPane(this.contentPane);
         this.setSize(500, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

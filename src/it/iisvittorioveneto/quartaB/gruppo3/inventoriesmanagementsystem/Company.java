@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class Company {
 
+    private Integer id;
     private String name;
     private String CAP;
     private String phoneNumber;
@@ -23,15 +24,19 @@ public class Company {
     private List<Product> products;
 
     public Company() {
-        this(null, null, null, null, new LinkedList<>());
+        this(null,null, null, null, null, new LinkedList<>());
     }
 
-    public Company(String name, String CAP, String phoneNumber, String email, Collection<Product> products) {
+    public Company(Integer integer, String name, String CAP, String phoneNumber, String email, Collection<Product> products) {
         this.name = name;
         this.CAP = CAP;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.products = Arrays.asList(products.toArray(Product[]::new));
+    }
+
+    public Company(int idCompany) {
+        this(idCompany, null, null, null, null, new LinkedList<>());
     }
 
     public String getName() {

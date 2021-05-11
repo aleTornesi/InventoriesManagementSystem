@@ -1,5 +1,7 @@
 package it.iisvittorioveneto.quartaB.gruppo3.gui;
 
+import it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem.Product;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +14,7 @@ public class NewProduct extends JFrame {
     private JButton JButtonOk;
     private JButton JButtonUndo;
 
-    public NewProduct(){
+    public NewProduct(Product product){
         this.setContentPane(this.contentPane);
         this.setSize(500, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -23,12 +25,12 @@ public class NewProduct extends JFrame {
 
         JButtonUndo.addActionListener(e ->{
             this.dispose();
-            new InventoryPage();
+            new InventoryPage(null);
         });
 
         JButtonOk.addActionListener(e ->{
             this.dispose();
-            new InventoryPage();
+            new InventoryPage(null);
         });
     }
 }
