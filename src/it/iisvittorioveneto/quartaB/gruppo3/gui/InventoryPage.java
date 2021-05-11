@@ -20,7 +20,7 @@ public class InventoryPage extends JFrame{
 
         JButtonNewProduct.addActionListener(e ->{
             //this.dispose();
-            new NewInventory();
+            new NewProduct();
         });
     }
 }
