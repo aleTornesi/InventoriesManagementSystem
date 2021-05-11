@@ -15,6 +15,7 @@ public class HomePage extends JFrame {
     private JPanel contentPane;
     private JTextField inventoriesTextField;
     private JList<JLabel> inventoriesList;
+    private JButton JButtonNewInventory;
     private User user;
 
     public HomePage(User user) {
@@ -44,5 +45,10 @@ public class HomePage extends JFrame {
                     }
                 }
         );
+
+        JButtonNewInventory.addActionListener(e ->{
+            this.dispose();
+            new NewInventory();
+        });
     }
 }

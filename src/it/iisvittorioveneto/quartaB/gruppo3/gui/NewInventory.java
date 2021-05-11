@@ -3,14 +3,15 @@ package it.iisvittorioveneto.quartaB.gruppo3.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class InventoryPage extends JFrame{
-    private JTextField InventoryTextField;
-    private JList ProductList;
+public class NewInventory extends JFrame {
     private JPanel contentPane;
-    private JButton JButtonNewProduct;
+    private JLabel LabelNewInventory;
+    private JTextField JTextFieldOwner;
+    private JTextField JTextFieldName;
+    private JButton JButtonOk;
+    private JButton JButtonUndo;
 
-    public InventoryPage() {
-
+    public NewInventory() {
         this.setContentPane(this.contentPane);
         this.setSize(500, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -18,9 +19,17 @@ public class InventoryPage extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
-        JButtonNewProduct.addActionListener(e ->{
-            //this.dispose();
-            new NewInventory();
+        /*
+        JButtonUndo.addActionListener(e ->{
+            this.dispose();
+            new HomePage();
         });
+
+        JButtonOk.addActionListener(e ->{
+            this.dispose();
+            new HomePage();
+        });
+        */
+
     }
 }
