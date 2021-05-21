@@ -16,6 +16,7 @@ import java.util.List;
 public class HomePage extends JFrame {
     private JPanel contentPane;
     private JTextField inventoriesTextField;
+    private JButton JButtonNewInventory;
     private JPanel list;
     private User user;
 

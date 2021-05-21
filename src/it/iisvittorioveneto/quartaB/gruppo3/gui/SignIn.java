@@ -20,6 +20,7 @@ public class SignIn extends JFrame {
     private JButton SignInButton;
     private JPanel contentPane;
     private JLabel errorLabel;
+    private JPasswordField JPasswordConfirmField;
 
     public SignIn() {
         this.setContentPane(this.contentPane);
