@@ -6,7 +6,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -20,7 +19,7 @@ public class SignIn extends JFrame {
     private JButton SignInButton;
     private JPanel contentPane;
     private JLabel errorLabel;
-    private JPasswordField JPasswordConfirmField;
+    private JPasswordField confirmPasswordTextField;
 
     public SignIn() {
         this.setContentPane(this.contentPane);
@@ -42,23 +41,29 @@ public class SignIn extends JFrame {
                 if (pattern.matcher(this.emailTextField.getText()).matches()) { //check if the email is valid
                     System.out.println("username: " + this.usernameTextField.getText());
                     if (!this.usernameTextField.getText().equals("")){
-                        if (this.passwordField.getPassword() != null) {
-                            if (this.passwordField.getPassword().length > 5) {
-                                String email = this.emailTextField.getText();
-                                String password = new String(passwordField.getPassword());
-                                String username = this.usernameTextField.getText();
-                                JDBC.signUp(email, password, username);
-                                this.dispose();
-                                new HomePage(new User(email, DigestUtils.sha1Hex(password), username));
+                        if (Arrays.equals(this.passwordField.getPassword(), this.confirmPasswordTextField.getPassword())) {
+                            if (this.passwordField.getPassword() != null) {
+                                if (this.passwordField.getPassword().length > 5) {
+                                    String email = this.emailTextField.getText();
+                                    String password = new String(passwordField.getPassword());
+                                    String username = this.usernameTextField.getText();
+                                    JDBC.signUp(email, password, username);
+                                    this.dispose();
+                                    new HomePage(new User(email, DigestUtils.sha1Hex(password), username));
 
+                                }
+                                else {
+                                    this.errorLabel.setText("The password must be long at least 6 characters");
+                                }
                             }
                             else {
-                                this.errorLabel.setText("The password must be long at least 6 characters");
+                                this.errorLabel.setText("You must insert a password");
                             }
                         }
                         else {
-                            this.errorLabel.setText("You must insert a password");
+                            this.errorLabel.setText("The two password don't match");
                         }
+
                     }
                     else {
                         this.errorLabel.setText("You must insert a username");

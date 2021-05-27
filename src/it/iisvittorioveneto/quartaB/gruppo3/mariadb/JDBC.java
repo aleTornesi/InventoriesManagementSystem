@@ -45,7 +45,7 @@ public class JDBC {
     public static void insertInventory(Inventory inventory) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        statement.executeQuery("insert into Inventories (name, fk_UsersEmail) values('" + inventory.getName() + "', '" + inventory.getOwner().getEmail() + "');");
+        statement.executeQuery("insert into Inventories (name, fk_UsersEmail, full) values('" + inventory.getName() + "', '" + inventory.getOwner().getEmail() + "', " + inventory.getFull() + ");");
         statement.close();
         connection.close();
     }
@@ -57,7 +57,7 @@ public class JDBC {
                 " fk_UsersEmail='" + owner.getEmail() + " '");
         List<Inventory> inventories = new LinkedList<>();
         while (rs.next()) {
-            inventories.add(new Inventory(rs.getInt("idInventory"), owner, rs.getString("name"), rs.getFloat("full"), new LinkedList<>(), new LinkedList<>()));
+            inventories.add(new Inventory(rs.getInt("idInventory"), owner, rs.getString("name"), rs.getFloat("full"), new LinkedList<>()));
         }
         System.out.println(inventories);
         rs.close();
@@ -67,20 +67,18 @@ public class JDBC {
     }
 
 
-    public static List<Product> getInventoryProducts(int inventoryId, String name) throws SQLException {
+    public static List<InventoryProduct> getInventoryProducts(int inventoryId, String name) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Products where Inventories_idInventory=" + inventoryId + ";");
-        List<Product> products = new LinkedList<>();
+        ResultSet rs = statement.executeQuery("select * from Inventories_Products where Inventories_idInventory=" + inventoryId + ";");
+        List<InventoryProduct> inventoryProducts = new LinkedList<>();
         while (rs.next()) {
-            products.add(new Product(rs.getInt("idProduct"), rs.getString("productName"), rs.getString("description"),
-                    rs.getString("productType"), new Company(rs.getInt("Companies_idCompanies")),
-                    new Inventory(rs.getInt("Inventories_idInventory")), rs.getInt("quantity")));
+            inventoryProducts.add(new InventoryProduct(inventoryId, rs.getString("Products_name"), rs.getInt("quantity")));
         }
         rs.close();
         statement.close();
         connection.close();
-        return products;
+        return inventoryProducts;
     }
 
     private static Product getProduct(Integer idProduct) throws SQLException {
@@ -89,7 +87,7 @@ public class JDBC {
         ResultSet rs = statement.executeQuery("select * from Products where idProduct=" + idProduct + ";");
         Product product = null;
         while (rs.next()) {
-            product = new Product(rs.getInt("idProduct"), rs.getString("productName"), rs.getString("description"), rs.getString("productType"), new Company(rs.getInt("Companies_idCompanies")));
+            product = new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName")));
         }
         rs.close();
         statement.close();
@@ -109,36 +107,36 @@ public class JDBC {
     }
 
     private static void deleteInventoryProducts(int idInventory) throws SQLException {
-        deleteInventoryProductsTags(idInventory);
+        //deleteInventoryProductsTags(idInventory);
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("delete from Products where Inventory_idInventory=" + idInventory + ";");
+        ResultSet rs = statement.executeQuery("delete from Products where Inventories_idInventory=" + idInventory + ";");
         rs.close();
         statement.close();
         connection.close();
     }
 
-    private static void deleteInventoryProductsTags(int idInventory) throws SQLException {
+    /*private static void deleteInventoryProductsTags(int idInventory) throws SQLException {
         List<Product> products = getInventoryProducts(idInventory, "");
         for (Product p: products) {
             deleteProductTags(p.getIdProduct());
         }
-    }
+    }*/
 
-    public static void deleteProductTags(int idProduct) throws SQLException {
+    public static void deleteProductTags(String productName) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("delete from Products_Tags where Products_idProducts=" + idProduct + ";");
+        ResultSet rs = statement.executeQuery("delete from Products_Tags where Products_idProducts=" + productName + ";");
         rs.close();
         statement.close();
         connection.close();
     }
 
-    public static void deleteProduct(int idProduct) throws SQLException {
-        deleteProductTags(idProduct);
+    public static void deleteProduct(String name) throws SQLException {
+        deleteProductTags(name);
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("delete from Products where idProduct=" + idProduct + ";");
+        ResultSet rs = statement.executeQuery("delete from Products where name='" + name + "';");
         rs.close();
         statement.close();
         connection.close();
@@ -148,7 +146,6 @@ public class JDBC {
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
         try {
-
             SAXParser saxParser = factory.newSAXParser();
             XMLParser handler = new XMLParser();
             saxParser.parse("DBCredentials.xml", handler);
@@ -156,4 +153,27 @@ public class JDBC {
         } catch (ParserConfigurationException | SAXException | IOException e) {return new Credentials();}
     }
 
+    public static void updateInventory(Inventory inventory) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("update Inventories set name='" + inventory.getName() + "', full=" + inventory.getFull() + " where idInventory='" + inventory.getIdInventory() + "';");
+        rs.close();
+        statement.close();
+        connection.close();
+    }
+
+    public static List<Product> getProducts(List<InventoryProduct> inventoryProducts) throws SQLException {
+        List<Product> products = new LinkedList<>();
+        for (InventoryProduct inventoryProduct: inventoryProducts) {
+            Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from Products where name='" + inventoryProduct.getProduct().getName() + "';");
+            if(rs.next())
+                products.add(new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName"))));
+            rs.close();
+            statement.close();
+            connection.close();
+        }
+        return products;
+    }
 }

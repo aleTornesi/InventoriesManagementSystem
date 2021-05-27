@@ -16,27 +16,24 @@ import java.util.List;
  */
 public class Company {
 
-    private Integer id;
     private String name;
     private String CAP;
     private String phoneNumber;
     private String email;
-    private List<Product> products;
 
     public Company() {
-        this(null,null, null, null, null, new LinkedList<>());
+        this(null, null, null, null);
     }
 
-    public Company(Integer integer, String name, String CAP, String phoneNumber, String email, Collection<Product> products) {
+    public Company(String name, String CAP, String phoneNumber, String email) {
         this.name = name;
         this.CAP = CAP;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.products = Arrays.asList(products.toArray(Product[]::new));
     }
 
-    public Company(int idCompany) {
-        this(idCompany, null, null, null, null, new LinkedList<>());
+    public Company(String name) {
+        this(name, null, null, null);
     }
 
     public String getName() {
@@ -55,9 +52,6 @@ public class Company {
         return email;
     }
 
-    public Product[] getProducts() {
-        return products.toArray(Product[]::new);
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -73,13 +67,5 @@ public class Company {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void addProduct(Product product) {
-        this.products.add(product);
-    }
-
-    public void removeProduct(Product product) {
-        this.products.remove(product);
     }
 }

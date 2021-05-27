@@ -30,6 +30,7 @@ public class Login extends JFrame {
                 if (pattern.matcher(emailTextField.getText()).matches()) { //check that the email is valid
                     User user = JDBC.logIn(emailTextField.getText(), new String(passwordField.getPassword()));
                     if (user != null){
+                        this.dispose();
                         new HomePage(user);
                     }
                     else{

@@ -18,7 +18,9 @@ public class HomePage extends JFrame {
     private JTextField inventoriesTextField;
     private JButton JButtonNewInventory;
     private JPanel list;
-    private User user;
+    private JButton newInventoryButton;
+    private JLabel usersInventoriesLbl;
+    private final User user;
 
     public HomePage(User user) {
         this.setContentPane(this.contentPane);
@@ -28,8 +30,8 @@ public class HomePage extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.user = user;
-        this.getInventoriesList("");
         list.setLayout(new BoxLayout(list, BoxLayout.PAGE_AXIS));
+        this.newInventoryButton.addActionListener(e -> new JDialog(new NewInventory(this, user)));
         this.inventoriesTextField.getDocument().addDocumentListener(
                 new DocumentListener() {
                     @Override
@@ -52,9 +54,11 @@ public class HomePage extends JFrame {
                     }
                 }
         );
+        this.getInventoriesList();
+        this.usersInventoriesLbl.setText(user.getUsername() + "'s inventories");
     }
 
-    private void getInventoriesList(String name) {
+    public void getInventoriesList(String name) {
         this.list.removeAll();
         this.list.revalidate();
         this.list.repaint();
@@ -64,14 +68,16 @@ public class HomePage extends JFrame {
                 JPanel jpanel = new JPanel();
                 jpanel.add(new JLabel(inventory.getName()));
                 JButton updateButton = new JButton("Update");
-                updateButton.addActionListener(e -> {
-                    new NewInventory(inventory);
-                }/*TODO call insert inventory page constructor */);
+                    updateButton.addActionListener(e -> {
+                        new NewInventory(this, inventory);
+                    }
+                );
                 jpanel.add(updateButton);
                 JButton deleteButton = new JButton("Delete");
-                updateButton.addActionListener(e -> {
+                deleteButton.addActionListener(e -> {
                     try {
                         JDBC.deleteInventory(inventory.getIdInventory());
+                        this.getInventoriesList();
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -92,5 +98,9 @@ public class HomePage extends JFrame {
             }
         } catch (SQLException | NullPointerException e) {}
 
+    }
+
+    public void getInventoriesList() {
+        this.getInventoriesList("");
     }
 }

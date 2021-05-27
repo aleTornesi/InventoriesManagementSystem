@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class Product {
 
-    private Integer idProduct;
     private String name;
     private String description;
     private String productType;
@@ -23,32 +22,17 @@ public class Product {
     private Integer quantity;
     private Company manufacturer;
 
-    public Product() {this(null, null, null, null, null, null, null);}
+    public Product() {this(null, null, null, null);}
 
-    public Product(int idProduct){
-        this(idProduct, null, null, null, null, null, null);
+    public Product(String name){
+        this(name, null, null, null);
     }
 
-    public Product(Integer idProduct, String name, String description, String productType, Company manufacturer, Inventory inventory, Integer quantity) {
-        this.idProduct = idProduct;
+    public Product(String name, String description, String productType, Company manufacturer) {
         this.name = name;
         this.description = description;
         this.productType = productType;
         this.manufacturer = manufacturer;
-        this.inventory = inventory;
-        this.quantity = quantity;
-    }
-
-    public Product(Integer idProduct, String name, String description, String productType, Company manufacturer) {
-        this(idProduct, name, description, productType, manufacturer, null, null);
-    }
-
-    public Integer getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(Integer idProduct) {
-        this.idProduct = idProduct;
     }
 
     public String getName() {

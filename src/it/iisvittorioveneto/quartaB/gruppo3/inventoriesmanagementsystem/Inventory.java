@@ -5,6 +5,7 @@
  */
 package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,36 +20,34 @@ public class Inventory {
     private User owner;
     private String name;
     private float full;
-    private List<InventoryProduct> inventoriesProducts;
+    private List<Product> products;
 
 
     public Inventory() {this((User) null);}
 
     public Inventory(int idInventory) {
-        this(idInventory, null, null, 0, new LinkedList<>(), new LinkedList<>());
+        this(idInventory, null, null, 0, new LinkedList<>());
     }
     public Inventory(String name) {
-        this(null, null, name, 0, new LinkedList<>(), new LinkedList<>());
+        this(null, null, name, 0, new LinkedList<>());
     }
 
     public Inventory(User user) {
-        this(null, user, null, 0, new LinkedList<>(), new LinkedList<>());
+        this(null, user, null, 0, new LinkedList<>());
     }
 
 
 
-    public Inventory(Integer idInventory, User owner, String name, float full, Collection<Product> products, Collection<Integer> quantities) {
+    public Inventory(Integer idInventory, User owner, String name, float full, Collection<Product> products) {
         this.idInventory = idInventory;
         this.owner = owner;
         this.name = name;
         this.full = full;
-        this.inventoriesProducts = new LinkedList<>();
-        if (products.size() != quantities.size()) throw new IllegalArgumentException("You have to pass the same number of products and quantities");
-        Product[] productsArray = products.toArray(Product[]::new);
-        Integer[] quantitiesArray = quantities.toArray(Integer[]::new);
-        for (int i = 0; i < productsArray.length; i++) {
-            this.inventoriesProducts.add(new InventoryProduct(this, productsArray[i], quantitiesArray[i]));
-        }
+        this.products = Arrays.asList(products.toArray(Product[]::new));
+    }
+
+    public Inventory(Integer idInventory, User owner, String name, float full) {
+        this(idInventory, owner, name, full, new LinkedList<>());
     }
 
     public int getIdInventory() {
@@ -67,10 +66,6 @@ public class Inventory {
         return full;
     }
 
-    public InventoryProduct[] getInventoriesProducts() {
-        return this.inventoriesProducts.toArray(InventoryProduct[]::new);
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -79,12 +74,12 @@ public class Inventory {
         this.full = full;
     }
 
-    public void addInventoryProduct(Inventory inventory, Product product, int quantity) {
-        this.inventoriesProducts.add(new InventoryProduct(inventory, product, quantity));
+    public Product[] getProducts() {
+        return products.toArray(Product[]::new);
     }
 
-    public void removeInventoryProduct(InventoryProduct inventoryProduct) {
-        this.inventoriesProducts.remove(inventoryProduct);
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 
     public User getOwner() {

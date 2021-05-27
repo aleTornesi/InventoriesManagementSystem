@@ -33,4 +33,8 @@ public class NewProduct extends JFrame {
             new InventoryPage(null);
         });
     }
+
+    public NewProduct() {
+        this(null);
+    }
 }

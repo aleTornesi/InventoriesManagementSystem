@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Tag {
     private String tag;
-    private List<Product> products;
+    private final List<Product> products;
 
     public Tag() {this(null, new LinkedList<>());}
 

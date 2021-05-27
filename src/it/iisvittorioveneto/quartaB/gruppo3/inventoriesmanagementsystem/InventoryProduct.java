@@ -24,6 +24,12 @@ public class InventoryProduct {
         this.quantity = quantity;
     }
 
+    public InventoryProduct(int inventoryId, String productName, int quantity) {
+        this.inventory = new Inventory(inventoryId);
+        this.product = new Product(productName);
+        this.quantity = quantity;
+    }
+
     public Inventory getInventory() {
         return inventory;
     }
