@@ -13,6 +13,12 @@ public class NewProduct extends JFrame {
     private JTextField JTextFiledProductField;
     private JButton JButtonOk;
     private JButton JButtonUndo;
+    private JComboBox comboBox1;
+    private JButton JButtonAddCompany;
+    private JTextField JTextFieldTag;
+    private JButton JButtonInsertTag;
+    private JTextArea JTextAreaTags;
+    private JPanel TagPanel;
 
     public NewProduct(Product product){
         this.setContentPane(this.contentPane);
@@ -31,6 +37,10 @@ public class NewProduct extends JFrame {
         JButtonOk.addActionListener(e ->{
             this.dispose();
             new InventoryPage(null);
+        });
+
+        JButtonAddCompany.addActionListener(e -> {
+            new NewCompany();
         });
     }
 
