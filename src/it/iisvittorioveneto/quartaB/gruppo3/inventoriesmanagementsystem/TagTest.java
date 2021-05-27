@@ -7,18 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TagTest {
 
     @Test
-    void getTag() {
-    }
-
-    @Test
-    void setTag() {
-    }
-
-    @Test
-    void getProducts() {
-    }
-
-    @Test
     void addProduct() {
     }
 
