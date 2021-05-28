@@ -28,6 +28,7 @@ public class Inventory {
     public Inventory(int idInventory) {
         this(idInventory, null, null, 0, new LinkedList<>());
     }
+
     public Inventory(String name) {
         this(null, null, name, 0, new LinkedList<>());
     }
@@ -36,14 +37,13 @@ public class Inventory {
         this(null, user, null, 0, new LinkedList<>());
     }
 
-
-
     public Inventory(Integer idInventory, User owner, String name, float full, Collection<Product> products) {
         this.idInventory = idInventory;
         this.owner = owner;
         this.name = name;
         this.full = full;
-        this.products = Arrays.asList(products.toArray(Product[]::new));
+        // this.products = Arrays.asList(products.toArray(Product[]::new));
+        this.products = new LinkedList<>(products);
     }
 
     public Inventory(Integer idInventory, User owner, String name, float full) {

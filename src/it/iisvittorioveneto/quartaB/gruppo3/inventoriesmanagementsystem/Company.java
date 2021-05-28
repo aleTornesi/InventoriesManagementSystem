@@ -52,7 +52,6 @@ public class Company {
         return email;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
