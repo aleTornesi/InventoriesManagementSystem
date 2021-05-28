@@ -1,33 +1,33 @@
 package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 
-import org.junit.jupiter.api.*;
+import org.junit.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class InventoryTest {
+public class InventoryTest {
 
-    @BeforeAll
-    static void setUpClass(){
+    @BeforeClass
+    public static void setUpClass() {
         System.out.println("Inizio");
     }
 
-    @AfterAll
-    static void tearDownClass(){
+    @AfterClass
+    public static void tearDownClass() {
         System.out.println("Fine");
     }
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         System.out.println("Inizio test");
     }
 
-    @AfterEach
-    void tearDown() {
+    @After
+    public void tearDown() {
         System.out.println("Fine test");
     }
 
     @Test
-    void addProduct() {
+    public void addProduct() {
         Inventory inventory = new Inventory();
         Product product = new Product();
         inventory.addProduct(product);
