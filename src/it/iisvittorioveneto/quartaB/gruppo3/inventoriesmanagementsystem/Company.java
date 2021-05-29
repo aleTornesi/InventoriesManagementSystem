@@ -5,11 +5,6 @@
  */
 package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  *
  * @author User
@@ -66,5 +61,10 @@ public class Company {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

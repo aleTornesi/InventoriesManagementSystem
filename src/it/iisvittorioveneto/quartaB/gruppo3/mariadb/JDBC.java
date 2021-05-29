@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -164,16 +165,49 @@ public class JDBC {
 
     public static List<Product> getProducts(List<InventoryProduct> inventoryProducts) throws SQLException {
         List<Product> products = new LinkedList<>();
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         for (InventoryProduct inventoryProduct: inventoryProducts) {
-            Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("select * from Products where name='" + inventoryProduct.getProduct().getName() + "';");
             if(rs.next())
                 products.add(new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName"))));
             rs.close();
             statement.close();
+        }
+        connection.close();
+        return products;
+    }
+
+    public static void insertProduct(Product product) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("insert into Products values('" + product.getName() + "', '" + product.getDescription() + "', '" + product.getProductType() + "' , '" + product.getManufacturer().getName() + "' );");
+        rs.close();
+        statement.close();
+        connection.close();
+        InventoryProduct[] ips = product.getInventoryProducts();
+        for (InventoryProduct ip: ips) {
+            connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+            statement = connection.createStatement();
+            rs = statement.executeQuery("insert into Inventories_Products values(" + ip.getInventory().getIdInventory() +
+                    ", '" + ip.getProduct().getName() + "' ," + ip.getQuantity() + ");");
+            rs.close();
+            statement.close();
             connection.close();
         }
-        return products;
+    }
+
+    public static List<Company> getAllCompanies() throws SQLException {
+        List<Company> companies = new LinkedList<>();
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("select * from Companies");
+        while(rs.next()) {
+            companies.add(new Company(rs.getString("name"), rs.getString("CAP"), rs.getString("phoneNumber"), rs.getString("email")));
+        }
+        rs.close();
+        statement.close();
+        connection.close();
+        return companies;
     }
 }

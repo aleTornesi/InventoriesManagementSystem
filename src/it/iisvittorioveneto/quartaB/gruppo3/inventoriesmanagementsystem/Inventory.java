@@ -5,7 +5,6 @@
  */
 package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class Inventory {
     private User owner;
     private String name;
     private float full;
-    private List<Product> products;
+    private List<InventoryProduct> inventoryProducts;
 
 
     public Inventory() {this((User) null);}
@@ -37,13 +36,12 @@ public class Inventory {
         this(null, user, null, 0, new LinkedList<>());
     }
 
-    public Inventory(Integer idInventory, User owner, String name, float full, Collection<Product> products) {
+    public Inventory(Integer idInventory, User owner, String name, float full, Collection<InventoryProduct> inventoryProducts) {
         this.idInventory = idInventory;
         this.owner = owner;
         this.name = name;
         this.full = full;
-        // this.products = Arrays.asList(products.toArray(Product[]::new));
-        this.products = new LinkedList<>(products);
+        this.inventoryProducts = new LinkedList<>(inventoryProducts);
     }
 
     public Inventory(Integer idInventory, User owner, String name, float full) {
@@ -74,12 +72,21 @@ public class Inventory {
         this.full = full;
     }
 
-    public Product[] getProducts() {
-        return products.toArray(Product[]::new);
+    public Product[] getInventoryProducts() {
+        List<Product> inventories = new LinkedList<>();
+        for (InventoryProduct ip: inventoryProducts) {
+            inventories.add(ip.getProduct());
+        }
+        return (Product[]) inventories.toArray();
     }
 
-    public void addProduct(Product product) {
-        this.products.add(product);
+    public void addProduct(InventoryProduct inventoryProduct) {
+        for (InventoryProduct ip : this.inventoryProducts) {
+            if (ip.getInventory() == inventoryProduct.getInventory()) {
+                throw new IllegalArgumentException("There already is an element with this inventory");
+            }
+        }
+        this.inventoryProducts.add(inventoryProduct);
     }
 
     public User getOwner() {

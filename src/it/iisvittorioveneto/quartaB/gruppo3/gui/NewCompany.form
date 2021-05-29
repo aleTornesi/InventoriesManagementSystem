@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="c06e5" class="javax.swing.JLabel" binding="JLabelNewComapany">
+      <component id="c06e5" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -33,7 +33,7 @@
               <text value="Name"/>
             </properties>
           </component>
-          <component id="d6992" class="javax.swing.JTextField" binding="JTextFieldName">
+          <component id="d6992" class="javax.swing.JTextField" binding="nameTextField">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -65,7 +65,7 @@
               <text value="Email"/>
             </properties>
           </component>
-          <component id="edf5c" class="javax.swing.JTextField" binding="JTextFieldCAP">
+          <component id="edf5c" class="javax.swing.JTextField" binding="CAPTextField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -73,7 +73,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="2b20f" class="javax.swing.JTextField" binding="JTextFieldPhoneNumber">
+          <component id="2b20f" class="javax.swing.JTextField" binding="phoneNumberTextField">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -81,7 +81,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="3b3d7" class="javax.swing.JTextField" binding="JTextFieldEmail">
+          <component id="3b3d7" class="javax.swing.JTextField" binding="emailTextField">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -99,7 +99,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="72a41" class="javax.swing.JButton" binding="JButtonOK">
+          <component id="72a41" class="javax.swing.JButton" binding="okButton">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -107,7 +107,7 @@
               <text value="OK"/>
             </properties>
           </component>
-          <component id="f1fa1" class="javax.swing.JButton" binding="JButtonUndo">
+          <component id="f1fa1" class="javax.swing.JButton" binding="undoButton">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>

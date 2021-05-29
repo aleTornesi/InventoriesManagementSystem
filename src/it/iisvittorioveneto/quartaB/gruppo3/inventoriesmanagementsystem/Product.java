@@ -18,21 +18,30 @@ public class Product {
     private String name;
     private String description;
     private String productType;
-    private Inventory inventory;
-    private Integer quantity;
     private Company manufacturer;
+    private final List<InventoryProduct> inventoryProducts;
 
-    public Product() {this(null, null, null, null);}
+    public Product() {
+        this(null);
+    }
 
     public Product(String name){
         this(name, null, null, null);
     }
 
-    public Product(String name, String description, String productType, Company manufacturer) {
+    public Product(String name, String description, String productType, Company manufacturer, Inventory[] inventories, int[] quantities) {
         this.name = name;
         this.description = description;
         this.productType = productType;
         this.manufacturer = manufacturer;
+        this.inventoryProducts = new LinkedList<>();
+        for (int i = 0; i < inventories.length; i++) {
+            this.inventoryProducts.add(new InventoryProduct(inventories[i], this, quantities[i]));
+        }
+    }
+
+    public Product(String name, String description, String productType, Company manufacturer) {
+        this(name, description, productType, manufacturer, new Inventory[0], new int[0]);
     }
 
     public String getName() {
@@ -67,19 +76,25 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public InventoryProduct[] getInventoryProducts() {
+        return this.inventoryProducts.toArray(InventoryProduct[]::new);
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+    public Inventory[] getInventories() {
+        List<Inventory> inventories = new LinkedList<>();
+        for (InventoryProduct ip: this.inventoryProducts) {
+            inventories.add(ip.getInventory());
+        }
+        return (Inventory[]) inventories.toArray();
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public void addInventoryProduct(InventoryProduct inventoryProduct) {
+        for (InventoryProduct ip : this.inventoryProducts) {
+            if (ip.getInventory() == inventoryProduct.getInventory()) {
+                throw new IllegalArgumentException("There already is an element with this inventory");
+            }
+        }
+        this.inventoryProducts.add(inventoryProduct);
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

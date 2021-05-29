@@ -1,12 +1,12 @@
 package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 
-import org.junit.jupiter.api.*;
+//import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
 
 public class TagTest {
 
-    @BeforeAll
+    /*@BeforeAll
     static void setUpClass(){
         System.out.println("Inizio");
     }
@@ -41,5 +41,5 @@ public class TagTest {
         tag.addProduct(product);
         tag.removeProduct(product);
         assertTrue(tag.getProducts().length==0);
-    }
+    }*/
 }

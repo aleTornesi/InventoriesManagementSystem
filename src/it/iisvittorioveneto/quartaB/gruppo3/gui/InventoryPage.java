@@ -55,7 +55,7 @@ public class InventoryPage extends JFrame {
         );
         this.addProductButton.addActionListener(
                 e -> {
-                    new NewProduct();
+                    new NewProduct(inventory);
                 }
         );
         this.usersProductsLbl.setText(inventory.getName() + "'s products");
@@ -73,7 +73,7 @@ public class InventoryPage extends JFrame {
                 jpanel.add(new JLabel(product.getName()));
                 JButton updateButton = new JButton("Update");
                 updateButton.addActionListener(e -> {
-                    new NewProduct(product);
+                    new NewProduct(inventory, product);
                 });
                 jpanel.add(updateButton);
                 JButton deleteButton = new JButton("Delete");

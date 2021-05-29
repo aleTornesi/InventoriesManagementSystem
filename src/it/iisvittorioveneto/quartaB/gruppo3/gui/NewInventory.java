@@ -16,6 +16,7 @@ public class NewInventory extends JFrame {
     private JButton JButtonOk;
     private JButton JButtonUndo;
     private JTextField fullTextField;
+    private JLabel errorLbl;
 
     public NewInventory(HomePage parent, @NotNull Inventory inventory) {
         this.setContentPane(this.contentPane);
@@ -32,20 +33,31 @@ public class NewInventory extends JFrame {
         });
 
         JButtonOk.addActionListener(e -> {
-            Inventory newInventory = new Inventory(
-                    inventory.getIdInventory(),
-                    inventory.getOwner(),
-                    this.nameTextField.getText(),
-                    Float.parseFloat(this.fullTextField.getText())
-            );
-            try {
-                JDBC.updateInventory(newInventory);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            if(this.nameTextField.getText().length() > 0) {
+                if(Float.parseFloat(this.fullTextField.getText()) >= 0 && Float.parseFloat(this.fullTextField.getText()) <= 100) {
+                    Inventory newInventory = new Inventory(
+                            inventory.getIdInventory(),
+                            inventory.getOwner(),
+                            this.nameTextField.getText(),
+                            Float.parseFloat(this.fullTextField.getText())
+                    );
+                    try {
+                        JDBC.updateInventory(newInventory);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    this.dispose();
+                    parent.getInventoriesList();
+                }
+                else {
+                    this.errorLbl.setText("The full value inserted is not a valid percentage");
+                }
+            }
+            else {
+                this.errorLbl.setText("An inventory must have a name");
             }
 
-            this.dispose();
-            parent.getInventoriesList();
         });
 
     }
