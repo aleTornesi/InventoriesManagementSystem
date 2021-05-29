@@ -77,7 +77,7 @@ public class Inventory {
         for (InventoryProduct ip: inventoryProducts) {
             inventories.add(ip.getProduct());
         }
-        return (Product[]) inventories.toArray();
+        return inventories.toArray(Product[]::new);
     }
 
     public void addProduct(InventoryProduct inventoryProduct) {

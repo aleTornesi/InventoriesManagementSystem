@@ -4,7 +4,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class InventoryTest {
+public class ProductTest {
 
     @BeforeClass
     public static void setUpClass(){
@@ -27,13 +27,10 @@ public class InventoryTest {
     }
 
     @Test
-    public void addProduct() {
-        Inventory inventory = new Inventory();
+    public void addInventoryProduct() {
         Product product = new Product();
-        int quantity = 1;
-        InventoryProduct inventoryProduct = new InventoryProduct(inventory, product, quantity);
-        inventory.addProduct(inventoryProduct);
-        assertTrue(inventory.getInventoryProducts()[0]==product);
+        InventoryProduct inventoryProduct = new InventoryProduct();
+        product.addInventoryProduct(inventoryProduct);
+        assertTrue(product.getInventoryProducts()[0]==inventoryProduct);
     }
-
 }
