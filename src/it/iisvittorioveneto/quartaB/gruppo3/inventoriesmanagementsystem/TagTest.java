@@ -31,7 +31,7 @@ public class TagTest {
         Tag tag = new Tag();
         Product product = new Product();
         tag.addProduct(product);
-        assertTrue(tag.getProducts()[0]==product);
+        assertSame(tag.getProducts()[0], product);
     }
 
     @Test
@@ -40,6 +40,6 @@ public class TagTest {
         Product product = new Product();
         tag.addProduct(product);
         tag.removeProduct(product);
-        assertTrue(tag.getProducts().length==0);
+        assertEquals(0, tag.getProducts().length);
     }
 }

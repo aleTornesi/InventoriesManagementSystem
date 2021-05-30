@@ -56,6 +56,7 @@ public class HomePage extends JFrame {
         );
         this.getInventoriesList();
         this.usersInventoriesLbl.setText(user.getUsername() + "'s inventories");
+        this.pack();
     }
 
     public void getInventoriesList(String name) {
@@ -77,7 +78,7 @@ public class HomePage extends JFrame {
                 deleteButton.addActionListener(e -> {
                     try {
                         JDBC.deleteInventory(inventory.getIdInventory());
-                        this.getInventoriesList();
+                        this.getInventoriesList(name);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -95,6 +96,7 @@ public class HomePage extends JFrame {
                     }
                 });
                 this.list.add(jpanel);
+                this.pack();
             }
         } catch (SQLException | NullPointerException e) {}
 

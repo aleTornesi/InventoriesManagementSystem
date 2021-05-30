@@ -8,9 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class JDBC {
 
@@ -54,46 +52,27 @@ public class JDBC {
     public static List<Inventory> getInventories(User owner, String inventoryName) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Inventories where name like '%" + inventoryName + "%' and" +
+        ResultSet rs = statement.executeQuery("select * from Inventories left join Inventories_Products on Inventories_Products.Inventories_idInventory = Inventories.idInventory where name like '%" + inventoryName + "%' and" +
                 " fk_UsersEmail='" + owner.getEmail() + " '");
         List<Inventory> inventories = new LinkedList<>();
+
         while (rs.next()) {
-            inventories.add(new Inventory(rs.getInt("idInventory"), owner, rs.getString("name"), rs.getFloat("full"), new LinkedList<>()));
+            boolean wasAlreadyInstantiated = false;
+            for (Inventory i: inventories) {
+                if (i.getIdInventory() == rs.getInt("idInventory")) {
+                    i.addProduct(new InventoryProduct(i, new Product(rs.getString("Products_name")), rs.getInt("quantity")));
+                    wasAlreadyInstantiated = true;
+                    break;
+                }
+            }
+            if (!wasAlreadyInstantiated)
+                inventories.add(new Inventory(rs.getInt("idInventory"), owner, rs.getString("name"), rs.getFloat("full"), new LinkedList<>()));
         }
+        rs.close();
+        statement.close();
+        connection.close();
         System.out.println(inventories);
-        rs.close();
-        statement.close();
-        connection.close();
         return inventories;
-    }
-
-
-    public static List<InventoryProduct> getInventoryProducts(int inventoryId, String name) throws SQLException {
-        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Inventories_Products where Inventories_idInventory=" + inventoryId + ";");
-        List<InventoryProduct> inventoryProducts = new LinkedList<>();
-        while (rs.next()) {
-            inventoryProducts.add(new InventoryProduct(inventoryId, rs.getString("Products_name"), rs.getInt("quantity")));
-        }
-        rs.close();
-        statement.close();
-        connection.close();
-        return inventoryProducts;
-    }
-
-    private static Product getProduct(Integer idProduct) throws SQLException {
-        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from Products where idProduct=" + idProduct + ";");
-        Product product = null;
-        while (rs.next()) {
-            product = new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName")));
-        }
-        rs.close();
-        statement.close();
-        connection.close();
-        return product;
     }
 
 
@@ -117,27 +96,30 @@ public class JDBC {
         connection.close();
     }
 
-    /*private static void deleteInventoryProductsTags(int idInventory) throws SQLException {
-        List<Product> products = getInventoryProducts(idInventory, "");
-        for (Product p: products) {
-            deleteProductTags(p.getIdProduct());
-        }
-    }*/
-
-    public static void deleteProductTags(String productName) throws SQLException {
+    public static void deleteProductTags(Product product) throws SQLException {
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("delete from Products_Tags where Products_idProducts=" + productName + ";");
+        ResultSet rs = statement.executeQuery("delete from Products_Tags where Products_name='" + product.getName() + "';");
         rs.close();
         statement.close();
         connection.close();
     }
 
-    public static void deleteProduct(String name) throws SQLException {
-        deleteProductTags(name);
+    public static void deleteProduct(Product product) throws SQLException {
+        deleteProductTags(product);
+        deleteProductInventoryProducts(product);
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("delete from Products where name='" + name + "';");
+        ResultSet rs = statement.executeQuery("delete from Products where name='" + product + "';");
+        rs.close();
+        statement.close();
+        connection.close();
+    }
+
+    private static void deleteProductInventoryProducts(Product product) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("delete from Inventories_Products where Products_name='" + product + "';");
         rs.close();
         statement.close();
         connection.close();
@@ -163,19 +145,49 @@ public class JDBC {
         connection.close();
     }
 
-    public static List<Product> getProducts(List<InventoryProduct> inventoryProducts) throws SQLException {
+    public static List<Product> getInventoryProducts(int inventoryId, String productName) throws SQLException {
         List<Product> products = new LinkedList<>();
         Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
-        for (InventoryProduct inventoryProduct: inventoryProducts) {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from Products where name='" + inventoryProduct.getProduct().getName() + "';");
-            if(rs.next())
-                products.add(new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName"))));
-            rs.close();
-            statement.close();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("select Products.*, quantity, Products_Tags.tag from Products left join Inventories_Products on Inventories_Products.Products_name=Products.name inner join Products_Tags on `Products_Tags`.`Products_name`=Products.name where Inventories_Products.Inventories_idInventory=" + inventoryId + " and Products.name like '%" + productName + "%';");
+        while(rs.next()) {
+            boolean wasAlreadyInstantiated = false;
+            for (Product p: products) {
+                if (p.getName().equals(rs.getString("name"))) {
+                    LinkedList<Product> tagProducts = new LinkedList<>();
+                    tagProducts.add(p);
+                    p.addTags(new Tag(rs.getString("tag"), tagProducts));
+                    wasAlreadyInstantiated = true;
+                    break;
+                }
+            }
+            if (!wasAlreadyInstantiated) {
+                Product p = new Product(rs.getString("name"), rs.getString("description"), rs.getString("productType"), new Company(rs.getString("fk_companyName")));
+                p.addInventoryProduct(new InventoryProduct(new Inventory(inventoryId), p, rs.getInt("quantity")));
+                products.add(p);
+                LinkedList<Product> tagProducts = new LinkedList<>();
+                tagProducts.add(p);
+                p.addTags(new Tag(rs.getString("tag"), tagProducts));
+            }
+
         }
+        rs.close();
+        statement.close();
         connection.close();
         return products;
+    }
+
+    public static List<Tag> getProductTags(Product product) throws SQLException {
+        List<Tag> tags = new LinkedList<>();
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("select Products_Tags.* from Products_Tags where Products_Tags.Products_name = '" + product.getName() + "';");
+        while(rs.next())
+            tags.add(new Tag(rs.getString("tag"), Collections.singletonList(product)));
+        rs.close();
+        statement.close();
+        connection.close();
+        return tags;
     }
 
     public static void insertProduct(Product product) throws SQLException {
@@ -209,5 +221,32 @@ public class JDBC {
         statement.close();
         connection.close();
         return companies;
+    }
+
+    public static void insertTag(String tag, Product product) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("insert into Products_Tags values('" + product.getName() + "', '" + tag + "')");
+        rs.close();
+        statement.close();
+        connection.close();
+    }
+
+    public static void updateProduct(Product product) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("update Products set description='" + product.getDescription() + "', productType='" + product.getProductType() + "', fk_companyName='"+ product.getManufacturer().getName() + "' where name='" + product.getName() + "';");
+        rs.close();
+        statement.close();
+        connection.close();
+    }
+
+    public static void insertCompany(Company company) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, credentials.getUsername(), credentials.getPassword());
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("insert into Companies values('" + company.getName() + "', '" + company.getCAP() + "', '" + company.getPhoneNumber() + "', '" + company.getEmail() + "' )");
+        rs.close();
+        statement.close();
+        connection.close();
     }
 }

@@ -27,7 +27,6 @@ public class InventoryPage extends JFrame {
         this.setSize(500, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2); //center the JFrame
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.inventory = inventory;
         this.productList.setLayout(new BoxLayout(this.productList, BoxLayout.PAGE_AXIS));
@@ -55,31 +54,32 @@ public class InventoryPage extends JFrame {
         );
         this.addProductButton.addActionListener(
                 e -> {
-                    new NewProduct(inventory);
+                    new NewProduct(inventory, this);
                 }
         );
         this.usersProductsLbl.setText(inventory.getName() + "'s products");
         this.getProductsList();
     }
 
-    private void getProductsList(String name) {
+    public void getProductsList(String name) {
         this.productList.removeAll();
         this.productList.revalidate();
         this.productList.repaint();
         try {
-            List<Product> products = JDBC.getProducts(JDBC.getInventoryProducts(this.inventory.getIdInventory(), name));
+            List<Product> products = JDBC.getInventoryProducts(this.inventory.getIdInventory(), name);
             for (Product product: products) {
                 JPanel jpanel = new JPanel();
                 jpanel.add(new JLabel(product.getName()));
                 JButton updateButton = new JButton("Update");
                 updateButton.addActionListener(e -> {
-                    new NewProduct(inventory, product);
+                    new NewProduct(inventory, product, this);
                 });
                 jpanel.add(updateButton);
                 JButton deleteButton = new JButton("Delete");
-                updateButton.addActionListener(e -> {
+                deleteButton.addActionListener(e -> {
                     try {
-                        JDBC.deleteProduct(product.getName());
+                        JDBC.deleteProduct(product);
+                        this.getProductsList(name);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
@@ -93,10 +93,11 @@ public class InventoryPage extends JFrame {
                      */
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        //TODO call constructor of ProductPage
+                        new ProductPage(product);
                     }
                 });
                 this.productList.add(jpanel);
+                this.pack();
             }
         } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
@@ -104,7 +105,7 @@ public class InventoryPage extends JFrame {
 
     }
 
-    private void getProductsList() {
+    public void getProductsList() {
         this.getProductsList("");
     }
 }

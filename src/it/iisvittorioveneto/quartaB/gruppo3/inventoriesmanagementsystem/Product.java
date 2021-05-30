@@ -20,6 +20,7 @@ public class Product {
     private String productType;
     private Company manufacturer;
     private final List<InventoryProduct> inventoryProducts;
+    private List<Tag> tags;
 
     public Product() {
         this(null);
@@ -29,11 +30,12 @@ public class Product {
         this(name, null, null, null);
     }
 
-    public Product(String name, String description, String productType, Company manufacturer, Inventory[] inventories, int[] quantities) {
+    public Product(String name, String description, String productType, Company manufacturer, Inventory[] inventories, int[] quantities, Collection<Tag> tags) {
         this.name = name;
         this.description = description;
         this.productType = productType;
         this.manufacturer = manufacturer;
+        this.tags = new LinkedList<>(tags);
         this.inventoryProducts = new LinkedList<>();
         for (int i = 0; i < inventories.length; i++) {
             this.inventoryProducts.add(new InventoryProduct(inventories[i], this, quantities[i]));
@@ -41,7 +43,7 @@ public class Product {
     }
 
     public Product(String name, String description, String productType, Company manufacturer) {
-        this(name, description, productType, manufacturer, new Inventory[0], new int[0]);
+        this(name, description, productType, manufacturer, new Inventory[0], new int[0], new LinkedList<>());
     }
 
     public String getName() {
@@ -95,6 +97,14 @@ public class Product {
             }
         }
         this.inventoryProducts.add(inventoryProduct);
+    }
+
+    public void addTags(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public Tag[] getTags() {
+        return this.tags.toArray(Tag[]::new);
     }
 
 }

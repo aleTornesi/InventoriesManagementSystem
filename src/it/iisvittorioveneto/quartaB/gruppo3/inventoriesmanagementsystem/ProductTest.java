@@ -31,6 +31,6 @@ public class ProductTest {
         Product product = new Product();
         InventoryProduct inventoryProduct = new InventoryProduct();
         product.addInventoryProduct(inventoryProduct);
-        assertTrue(product.getInventoryProducts()[0]==inventoryProduct);
+        assertSame(product.getInventoryProducts()[0], inventoryProduct);
     }
 }

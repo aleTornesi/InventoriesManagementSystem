@@ -8,6 +8,7 @@ package it.iisvittorioveneto.quartaB.gruppo3.inventoriesmanagementsystem;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -82,11 +83,19 @@ public class Inventory {
 
     public void addProduct(InventoryProduct inventoryProduct) {
         for (InventoryProduct ip : this.inventoryProducts) {
-            if (ip.getInventory() == inventoryProduct.getInventory()) {
-                throw new IllegalArgumentException("There already is an element with this inventory");
+            if (ip.getProduct() == inventoryProduct.getProduct()) {
+                throw new IllegalArgumentException("There already is an element with this product");
             }
         }
         this.inventoryProducts.add(inventoryProduct);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Inventory inventory = (Inventory) o;
+        return this.idInventory == inventory.getIdInventory();
     }
 
     public User getOwner() {
