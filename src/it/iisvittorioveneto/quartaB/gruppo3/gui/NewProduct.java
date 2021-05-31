@@ -20,7 +20,6 @@ public class NewProduct extends JFrame {
     private JButton addCompanyButton;
     private JTextField tagTextField;
     private JButton insertTagButton;
-    private JPanel TagPanel;
     private JPanel tagsContainer;
     private JLabel errorLbl;
     private JTextField quantityTextField;

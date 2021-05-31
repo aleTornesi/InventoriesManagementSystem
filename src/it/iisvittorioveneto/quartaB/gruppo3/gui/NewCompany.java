@@ -66,6 +66,8 @@ public class NewCompany extends JFrame{
             }
         });
 
+        this.undoButton.addActionListener(e -> this.dispose());
+
     }
 
 }

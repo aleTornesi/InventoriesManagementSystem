@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 public class SignIn extends JFrame {
     private JTextField usernameTextField;
     private JTextField emailTextField;
-    private JLabel usernameLabel;
-    private JLabel emailLabel;
     private JPasswordField passwordField;
     private JButton LoginRetButton;
     private JButton SignInButton;
@@ -75,7 +73,7 @@ public class SignIn extends JFrame {
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
-                        "We're having some kind of problem");
+                        "This email is already used by another user");
             }
         });
     }

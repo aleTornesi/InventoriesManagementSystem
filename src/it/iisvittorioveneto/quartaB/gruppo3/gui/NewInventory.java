@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class NewInventory extends JFrame {
     private JPanel contentPane;
-    private JLabel newInventoryLabel;
     private JTextField nameTextField;
     private JButton JButtonOk;
     private JButton JButtonUndo;
