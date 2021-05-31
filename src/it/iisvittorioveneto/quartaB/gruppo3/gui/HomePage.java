@@ -80,7 +80,8 @@ public class HomePage extends JFrame {
                         JDBC.deleteInventory(inventory.getIdInventory());
                         this.getInventoriesList(name);
                     } catch (SQLException ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this,
+                                "We're having some kind of problem");
                     }
                 });
                 jpanel.add(deleteButton);
@@ -98,7 +99,10 @@ public class HomePage extends JFrame {
                 this.list.add(jpanel);
                 this.pack();
             }
-        } catch (SQLException | NullPointerException e) {}
+        } catch (SQLException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this,
+                    "We're having some kind of problem");
+        }
 
     }
 

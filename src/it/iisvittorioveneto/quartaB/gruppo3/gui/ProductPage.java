@@ -6,7 +6,6 @@ import it.iisvittorioveneto.quartaB.gruppo3.mariadb.JDBC;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class ProductPage extends JFrame{
     private JPanel contentPane;
@@ -27,11 +26,6 @@ public class ProductPage extends JFrame{
         this.productTypeLabel.setText(product.getProductType());
         this.manufacturerLabel.setText(product.getManufacturer().getName());
         this.tagContainer.setLayout(new GridLayout(0, 7));
-        /*try {
-            product.setTags(JDBC.getProductTags(product));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
         for (Tag t : product.getTags())
             tagContainer.add(new JLabel(t.getTag()));
         this.pack();

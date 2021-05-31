@@ -45,7 +45,8 @@ public class Login extends JFrame {
                 }
 
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "We're having some kind of problem");
             }
         });
         signInButton.addActionListener(e -> {

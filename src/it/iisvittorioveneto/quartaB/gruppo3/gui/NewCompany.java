@@ -43,8 +43,10 @@ public class NewCompany extends JFrame{
                                 );
                                 JDBC.insertCompany(c);
                                 parent.updateSelectedCompany(c.getName());
+                                this.dispose();
                             } catch (SQLException throwables) {
-                                throwables.printStackTrace();
+                                JOptionPane.showMessageDialog(this,
+                                        "We're having some kind of problem");
                             }
                         }
                         else {

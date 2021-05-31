@@ -43,7 +43,8 @@ public class NewInventory extends JFrame {
                     try {
                         JDBC.updateInventory(newInventory);
                     } catch (SQLException ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this,
+                                "We're having some kind of problem");
                     }
 
                     this.dispose();
@@ -83,7 +84,8 @@ public class NewInventory extends JFrame {
             try {
                 JDBC.insertInventory(newInventory);
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "We're having some kind of problem");
             }
 
             this.dispose();

@@ -74,7 +74,8 @@ public class SignIn extends JFrame {
                 }
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "We're having some kind of problem");
             }
         });
     }

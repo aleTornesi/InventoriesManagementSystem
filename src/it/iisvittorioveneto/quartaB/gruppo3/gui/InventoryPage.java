@@ -81,7 +81,8 @@ public class InventoryPage extends JFrame {
                         JDBC.deleteProduct(product);
                         this.getProductsList(name);
                     } catch (SQLException ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this,
+                                "We're having some kind of problem");
                     }
                 });
                 jpanel.add(deleteButton);
@@ -100,7 +101,8 @@ public class InventoryPage extends JFrame {
                 this.pack();
             }
         } catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "We're having some kind of problem");
         }
 
     }

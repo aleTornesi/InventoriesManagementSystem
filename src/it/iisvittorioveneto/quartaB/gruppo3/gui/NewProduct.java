@@ -74,7 +74,8 @@ public class NewProduct extends JFrame {
                         JDBC.insertTag(t, createdProduct);
                     }
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                            "We're having some kind of problem");
                 }
                 inventoryPage.getProductsList();
                 inventoryPage.pack();
@@ -93,7 +94,8 @@ public class NewProduct extends JFrame {
         try {
             comboBoxModel.addAll(JDBC.getAllCompanies());
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "We're having some kind of problem");
         }
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
             if (comboBoxModel.getElementAt(i).getName().equals(product.getManufacturer().getName())) {
@@ -152,7 +154,8 @@ public class NewProduct extends JFrame {
                         JDBC.insertTag(t, createdProduct);
                     }
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                            "We're having some kind of problem");
                 }
                 parent.getProductsList();
                 parent.pack();
@@ -171,7 +174,8 @@ public class NewProduct extends JFrame {
         try {
             comboBoxModel.addAll(JDBC.getAllCompanies());
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "We're having some kind of problem");
         }
 
         this.insertTagButton.addActionListener(
@@ -210,7 +214,8 @@ public class NewProduct extends JFrame {
         try {
             comboBoxModel.addAll(JDBC.getAllCompanies());
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "We're having some kind of problem");
         }
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
             if (comboBoxModel.getElementAt(i).getName().equals(name)) {
